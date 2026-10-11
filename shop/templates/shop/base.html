@@ -7,14 +7,13 @@
 :root{--ink:#1b2a41;--blue:#2f5d8a;--rule:#d5dae1;--bg:#f6f7f9;--ok:#2e7d4f;--bad:#b3412f;--card:#fff}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Segoe UI",system-ui,sans-serif}
-header{background:linear-gradient(135deg,#0f1f35,#0b1930 35%,#132f4f);color:#fff;display:flex;flex-wrap:wrap;align-items:flex-end;gap:6px 22px;padding:12px 24px;border-bottom:1px solid rgba(255,255,255,.08)}
-header .brand{display:flex;align-items:center;gap:12px;font-weight:700;font-size:18px;letter-spacing:.06em;color:#f8d77e;text-transform:uppercase;margin-right:10px}
+header{background:linear-gradient(135deg,#0f1f35,#0b1930 35%,#132f4f);color:#fff;display:flex;flex-wrap:wrap;align-items:center;gap:6px 22px;padding:12px 24px;border-bottom:1px solid rgba(255,255,255,.08)}
+header .brand{display:flex;align-items:center;gap:12px;font-weight:700;font-size:18px;letter-spacing:.06em;color:#f8d77e;text-transform:uppercase}
 header .brand img{height:52px;width:auto;object-fit:contain;display:block;padding:5px 8px;border-radius:12px;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.25)}
 header .brand a:hover{border-bottom:0}
 header .brand span{font-family:Georgia,"Times New Roman",serif;font-size:1.7rem;letter-spacing:.08em;line-height:1.1;text-shadow:0 2px 8px rgba(0,0,0,.18)}
 header b{font-size:17px;margin-right:8px}
-header nav{display:flex;flex-wrap:wrap;align-items:flex-end;gap:6px 18px;margin-top:10px}
-header a{color:#cfd8e6;text-decoration:none;padding:4px 0;line-height:1.2}
+header a{color:#cfd8e6;text-decoration:none;padding:4px 0}
 header a:hover,header a.on{color:#fff;border-bottom:2px solid #8fb4dd}
 header .sp{flex:1}
 main{max-width:1100px;margin:22px auto;padding:0 20px}
@@ -44,14 +43,12 @@ input:focus,select:focus,button:focus-visible,a:focus-visible{outline:2px solid 
 <header>
   <div class="brand"><a href="{% url 'home' %}" style="padding:0;display:flex"><img src="{% static 'shop/logo-emblem.png' %}" alt="Glory Essence logo"></a><span>Glory Essence</span></div>
 {% if user.is_authenticated %}
-  <nav>
-    {% if user.is_staff %}<a href="{% url 'dashboard' %}">Dashboard</a>{% endif %}
-    <a href="{% url 'sale_new' %}">New sale</a><a href="{% url 'sales' %}">Transactions</a>
-    <a href="{% url 'customers' %}">Customers</a>
-    {% if user.is_staff %}<a href="{% url 'products' %}">Products</a><a href="{% url 'report' %}">Ledger report</a><a href="{% url 'cashiers' %}">Cashiers</a>{% endif %}
-  </nav>
-  <span class="sp"></span><span>{{ user.get_full_name|default:user.username }}{% if user.is_staff %} (Admin){% endif %}</span>
-  <form method="post" action="{% url 'logout' %}" style="margin:0">{% csrf_token %}<button class="alt" style="padding:4px 12px">Log out</button></form>
+ {% if user.is_staff %}<a href="{% url 'dashboard' %}">Dashboard</a>{% endif %}
+ <a href="{% url 'sale_new' %}">New sale</a><a href="{% url 'sales' %}">Transactions</a>
+ <a href="{% url 'customers' %}">Customers</a>
+ {% if user.is_staff %}<a href="{% url 'products' %}">Products</a><a href="{% url 'report' %}">Ledger report</a><a href="{% url 'cashiers' %}">Cashiers</a>{% endif %}
+ <span class="sp"></span><span>{{ user.get_full_name|default:user.username }}{% if user.is_staff %} (Admin){% endif %}</span>
+ <form method="post" action="{% url 'logout' %}" style="margin:0">{% csrf_token %}<button class="alt" style="padding:4px 12px">Log out</button></form>
 {% endif %}</header>
 <main>
 {% for m in messages %}<div class="msg {{ m.tags }}">{{ m }}</div>{% endfor %}
