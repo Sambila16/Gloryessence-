@@ -1,3 +1,5 @@
-Django>=4.2,<7
-gunicorn
-whitenoise
+   Django>=4.2,<7
+   gunicorn
+   whitenoise
+   dj-database-url
+   psycopg[binary]>=3.2.10
