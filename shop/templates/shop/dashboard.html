@@ -1,0 +1,17 @@
+{% extends "shop/base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Today at the shop</h1>
+<div class="stats">
+<div class="stat"><span>Sales today</span><strong>{{ total|floatformat:"0g" }}</strong></div>
+<div class="stat"><span>Profit today</span><strong class="profit">{{ profit|floatformat:"0g" }}</strong></div>
+<div class="stat"><span>Transactions</span><strong>{{ count }}</strong></div></div>
+<h2>Cashier activity today</h2>
+<table><thead><tr><th>Cashier</th><th class="n">Transactions</th><th class="n">Sales</th></tr></thead><tbody>
+{% for c,r in by_cashier %}<tr><td>{{ c.get_full_name|default:c.username }}</td><td class="n">{{ r.count }}</td><td class="n">{{ r.total|floatformat:"0g" }}</td></tr>
+{% empty %}<tr><td colspan="3">No cashier activity yet today.</td></tr>{% endfor %}</tbody></table>
+<h2>Low stock (5 pc or fewer)</h2>
+<table><thead><tr><th>Product</th><th class="n">Left (pc)</th></tr></thead><tbody>
+{% for p in low_stock %}<tr><td><a href="{% url 'product_edit' p.pk %}">{{ p.name }}</a></td><td class="n low">{{ p.quantity }}</td></tr>
+{% empty %}<tr><td colspan="2">All products are well stocked.</td></tr>{% endfor %}</tbody></table>
+{% endblock %}

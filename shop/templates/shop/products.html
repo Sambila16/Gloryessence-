@@ -1,0 +1,8 @@
+{% extends "shop/base.html" %}
+{% block title %}Products{% endblock %}
+{% block content %}
+<h1>Products</h1><p><a class="btn" href="{% url 'product_new' %}">Register product</a></p>
+<table><thead><tr><th>Product</th><th class="n">Stock (pc)</th><th class="n">Buying price</th><th class="n">Selling price</th><th></th></tr></thead><tbody>
+{% for p in products %}<tr><td>{{ p.name }}</td><td class="n {% if p.quantity <= 5 %}low{% endif %}">{{ p.quantity }}</td><td class="n">{{ p.buying_price|floatformat:"0g" }}</td><td class="n">{{ p.selling_price|floatformat:"0g" }}</td><td><a href="{% url 'product_edit' p.pk %}">Edit</a></td></tr>
+{% empty %}<tr><td colspan="5">No products yet. Register your first product.</td></tr>{% endfor %}</tbody></table>
+{% endblock %}

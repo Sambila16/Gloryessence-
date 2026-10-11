@@ -1,0 +1,10 @@
+{% extends "shop/base.html" %}
+{% block title %}Customers{% endblock %}
+{% block content %}
+<h1>Regular customers</h1>
+<form class="filters" method="get"><div><label>Search</label><input name="q" value="{{ q }}" placeholder="Name, phone or location"></div><button>Search</button>
+<a class="btn alt" href="{% url 'customer_new' %}">Register customer</a></form>
+<table><thead><tr><th>Name</th><th>Phone</th><th>Location</th><th>Registered by</th></tr></thead><tbody>
+{% for c in customers %}<tr><td>{{ c.name }}</td><td>{{ c.phone }}</td><td>{{ c.location }}</td><td>{{ c.added_by.get_full_name|default:c.added_by.username }}</td></tr>
+{% empty %}<tr><td colspan="4">No customers found. Register a regular customer to see them here.</td></tr>{% endfor %}</tbody></table>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "shop/base.html" %}
+{% block content %}
+<div class="panel" style="max-width:560px"><h1>{{ title }}</h1>
+<form method="post">{% csrf_token %}
+{% for f in form %}<label for="{{ f.id_for_label }}">{{ f.label }}</label>{{ f }}
+{% for e in f.errors %}<div class="err">{{ e }}</div>{% endfor %}{% endfor %}
+{% if hint %}<p class="help">{{ hint }}</p>{% endif %}
+<p><button>Save</button> <a class="btn alt" href="javascript:history.back()">Cancel</a></p></form></div>
+{% endblock %}

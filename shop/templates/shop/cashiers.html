@@ -1,0 +1,13 @@
+{% extends "shop/base.html" %}
+{% block title %}Cashiers{% endblock %}
+{% block content %}
+<h1>Cashiers</h1>
+<table><thead><tr><th>Name</th><th>Username</th><th>Status</th><th></th></tr></thead><tbody>
+{% for c in cashiers %}<tr><td>{{ c.get_full_name }}</td><td>{{ c.username }}</td><td>{% if c.is_active %}Active{% else %}Disabled{% endif %}</td>
+<td><form method="post" action="{% url 'cashier_toggle' c.pk %}" style="margin:0">{% csrf_token %}<button class="alt" style="padding:3px 12px">{% if c.is_active %}Disable{% else %}Enable{% endif %}</button></form></td></tr>
+{% empty %}<tr><td colspan="4">No cashiers yet. Add one below.</td></tr>{% endfor %}</tbody></table>
+<div class="panel" style="max-width:560px;margin-top:20px"><h2 style="margin-top:0">Add cashier</h2>
+<form method="post">{% csrf_token %}
+{% for f in form %}<label for="{{ f.id_for_label }}">{{ f.label }}</label>{{ f }}{% for e in f.errors %}<div class="err">{{ e }}</div>{% endfor %}{% endfor %}
+<p><button>Create cashier</button></p></form></div>
+{% endblock %}

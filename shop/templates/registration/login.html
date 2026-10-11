@@ -1,0 +1,13 @@
+{% extends "shop/base.html" %}
+{% block title %}Log in{% endblock %}
+{% load static %}
+{% block content %}
+<div class="panel" style="max-width:420px;margin:40px auto">
+<img src="{% static 'shop/logo.png' %}" alt="Glory Essence" style="display:block;width:150px;max-width:60%;margin:0 auto 12px">
+<h1 style="text-align:center">Log in</h1>
+<form method="post">{% csrf_token %}
+{% if form.errors %}<p class="err">Wrong username or password. Check both and try again.</p>{% endif %}
+<label for="id_username">Username</label>{{ form.username }}
+<label for="id_password">Password</label>{{ form.password }}
+<p><button>Log in</button></p></form></div>
+{% endblock %}

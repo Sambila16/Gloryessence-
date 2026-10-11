@@ -1,0 +1,24 @@
+{% extends "shop/base.html" %}
+{% block title %}New sale{% endblock %}
+{% block content %}
+<h1>Record a sale</h1>
+<div class="panel" style="max-width:560px">
+<form method="post">{% csrf_token %}
+{{ form.non_field_errors }}
+{% for f in form %}<label for="{{ f.id_for_label }}">{{ f.label }}{% if f.name == "customer" %} (optional){% endif %}</label>{{ f }}
+{% for e in f.errors %}<div class="err">{{ e }}</div>{% endfor %}{% endfor %}
+<p>Total: <strong id="total">0</strong></p>
+<p><button>Save sale</button></p></form></div>
+<h2>Your sales today</h2>
+<table><thead><tr><th>Time</th><th>Item</th><th class="n">Pieces</th><th class="n">Price</th><th class="n">Total</th><th>Payment</th></tr></thead><tbody>
+{% for s in recent %}<tr><td>{{ s.created|time:"H:i" }}</td><td>{{ s.product }}</td><td class="n">{{ s.quantity }}</td><td class="n">{{ s.selling_price|floatformat:"0g" }}</td><td class="n">{{ s.total|floatformat:"0g" }}</td><td>{{ s.payment_method }}</td></tr>
+{% empty %}<tr><td colspan="6">No sales yet today. Pick an item above and save your first sale.</td></tr>{% endfor %}</tbody></table>
+{{ prices|json_script:"prices" }}
+<script>
+const prices=JSON.parse(document.getElementById("prices").textContent);
+const p=document.getElementById("id_product"),q=document.getElementById("id_quantity"),s=document.getElementById("id_selling_price"),t=document.getElementById("total");
+function calc(){t.textContent=((+q.value||0)*(+s.value||0)).toLocaleString()}
+p.addEventListener("change",()=>{if(prices[p.value])s.value=prices[p.value];calc()});
+q.addEventListener("input",calc);s.addEventListener("input",calc);calc();
+</script>
+{% endblock %}

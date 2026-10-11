@@ -1,0 +1,16 @@
+{% extends "shop/base.html" %}
+{% block title %}Ledger report{% endblock %}
+{% block content %}
+<h1>Ledger report</h1>
+<form class="filters" method="get">
+<div><label>From</label><input type="date" name="from" value="{{ get.from }}"></div>
+<div><label>To</label><input type="date" name="to" value="{{ get.to }}"></div>
+<div><label>Cashier</label><select name="cashier"><option value="">All cashiers</option>
+{% for c in cashiers %}<option value="{{ c.pk }}" {% if get.cashier == c.pk|stringformat:"s" %}selected{% endif %}>{{ c.get_full_name|default:c.username }}</option>{% endfor %}</select></div>
+<button>Apply</button><button type="button" class="alt" onclick="window.print()">Print</button></form>
+<table><thead><tr><th>Products</th><th class="n">Quantity (pc)</th><th class="n">Sold (pc)</th><th class="n">Left (pc)</th><th class="n">Buying price</th><th class="n">Sales price</th><th class="n">Capital</th><th class="n">Business profit</th><th class="n">New capital</th></tr></thead><tbody>
+{% for r in rows %}<tr><td>{{ r.p.name }}</td><td class="n">{{ r.p.opening_quantity }}</td><td class="n">{{ r.sold }}</td><td class="n">{{ r.p.quantity }}</td><td class="n">{{ r.p.buying_price|floatformat:"0g" }}</td><td class="n">{{ r.p.selling_price|floatformat:"0g" }}</td><td class="n">{{ r.capital|floatformat:"0g" }}</td><td class="n profit">{{ r.profit|floatformat:"0g" }}</td><td class="n">{{ r.new_capital|floatformat:"0g" }}</td></tr>
+{% empty %}<tr><td colspan="9">No products registered yet.</td></tr>{% endfor %}</tbody>
+<tfoot><tr><td colspan="6">Total</td><td class="n">{{ tc|floatformat:"0g" }}</td><td class="n">{{ tp|floatformat:"0g" }}</td><td class="n">{{ tn|floatformat:"0g" }}</td></tr></tfoot></table>
+<p class="help">Capital = quantity x buying price. Business profit = pieces sold x (price sold at - buying price). New capital = capital + business profit.</p>
+{% endblock %}

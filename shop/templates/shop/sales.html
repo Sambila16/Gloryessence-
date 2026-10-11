@@ -1,0 +1,15 @@
+{% extends "shop/base.html" %}
+{% block title %}Transactions{% endblock %}
+{% block content %}
+<h1>Transactions</h1>
+<form class="filters" method="get">
+<div><label>From</label><input type="date" name="from" value="{{ get.from }}"></div>
+<div><label>To</label><input type="date" name="to" value="{{ get.to }}"></div>
+{% if user.is_staff %}<div><label>Cashier</label><select name="cashier"><option value="">All cashiers</option>
+{% for c in cashiers %}<option value="{{ c.pk }}" {% if get.cashier == c.pk|stringformat:"s" %}selected{% endif %}>{{ c.get_full_name|default:c.username }}</option>{% endfor %}</select></div>{% endif %}
+<button>Filter</button></form>
+<table><thead><tr><th>Date and time</th><th>Cashier</th><th>Item</th><th class="n">Pieces</th><th class="n">Price</th><th class="n">Total</th><th>Payment</th><th>Customer</th></tr></thead><tbody>
+{% for s in sales %}<tr><td>{{ s.created|date:"d M Y H:i" }}</td><td>{{ s.cashier.get_full_name|default:s.cashier.username }}</td><td>{{ s.product }}</td><td class="n">{{ s.quantity }}</td><td class="n">{{ s.selling_price|floatformat:"0g" }}</td><td class="n">{{ s.total|floatformat:"0g" }}</td><td>{{ s.payment_method }}</td><td>{{ s.customer|default:"" }}</td></tr>
+{% empty %}<tr><td colspan="8">No transactions match these filters.</td></tr>{% endfor %}</tbody>
+<tfoot><tr><td colspan="5">Total</td><td class="n">{{ total|floatformat:"0g" }}</td><td colspan="2"></td></tr></tfoot></table>
+{% endblock %}
